@@ -1,21 +1,25 @@
-FROM ubuntu:latest
-
-RUN apt-get update && apt-get install -y curl unzip
-
-# Install Bun
-RUN curl -fsSL https://bun.sh/install | bash
-
-ENV PATH="/root/.bun/bin:$PATH"
+FROM oven/bun:latest as build-stage
 
 WORKDIR /app
 
 COPY . .
 
-# Install dependencies
+# If use production change .env.stg to .env.production
+COPY ./app/.env.stg .env
+COPY ./app/package.json package.json
+COPY ./app/bun.lockb bun.lockb
+
 RUN bun install
+RUN bun build ./app/server.js --compile --outfile server
 
-# Expose the port your app runs on
-EXPOSE 3000
+# Reduce image size
+FROM  --platform=linux/amd64 oven/bun:latest
 
-# Command to run your application
-CMD ["bun", "start"]
+WORKDIR /app
+
+# COPY --from=build-stage /dist/.env ./.env
+# COPY --from=build-stage /dist/server ./server
+
+EXPOSE 8080
+
+CMD ["./server"]

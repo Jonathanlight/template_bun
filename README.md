@@ -19,6 +19,10 @@ Run Bun with docker
 git clone https://github.com/Jonathanlight/template_bun.git
 cd template_bun
 
+bun install
+
+bun run dev
+
 # build docker containers
 $ make docker-build
 
