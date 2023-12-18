@@ -1,0 +1,20 @@
+# Fichiers de configuration et dossiers
+node_modules/
+.env
+.DS_Store
+.vscode
+
+# Dossiers de build et de logs
+dist/
+build/
+logs/
+*.log
+
+# Fichiers spécifiques
+*.temp
+*.tmp
+
+# Autres fichiers et dossiers ignorés
+.idea/
+*.swp
+*.swo
